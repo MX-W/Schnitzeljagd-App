@@ -1,0 +1,81 @@
+package views;
+
+import java.util.ArrayList;
+
+import location.NavigationController;
+import location.NavigationController.NavigationListener;
+import android.app.Activity;
+import android.content.Intent;
+import android.location.Location;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ListView;
+import de.ur.mi.android.examples.navigation.NavigationApp;
+import de.ur.mi.android.examples.navigation.R;
+
+public class MainActivity extends Activity {
+
+	private ArrayList<Location> saved_locations;
+	private LocationListAdapter location_adapter;
+	private NavigationController navigationController;
+	private NavigationListener navigationListener;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		initNavigation();
+		initData();
+		initUI();
+	}
+
+	@Override
+	protected void onPause() {
+		navigationController.stop();
+		super.onPause();
+	}
+
+	@Override
+	protected void onResume() {
+		navigationController.start();
+		super.onResume();
+	}
+
+	private void initNavigation() {
+		navigationController = new NavigationController(this, null);
+	}
+
+	private void initData() {
+		saved_locations = new ArrayList<Location>();
+	}
+
+	private void initUI() {
+		Button savePosition = (Button) findViewById(R.id.button_save_current_position);
+		location_adapter = new LocationListAdapter(this, saved_locations);
+		ListView targets = (ListView) findViewById(R.id.list_saved_positions);
+		View.OnClickListener clickListener = new OnClickListener() {
+			public void onClick(View v) {
+				switch (v.getId()) {
+				case R.id.button_save_current_position:
+					saveCurrentPosition();
+				case R.id.list_saved_positions:
+					
+					startNavigation();
+				}
+			}
+		};
+	}
+
+	private void startNavigation(Location target) {
+	}
+
+	private void saveCurrentPosition() {
+		
+	}
+
+}
